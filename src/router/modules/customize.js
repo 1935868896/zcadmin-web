@@ -31,6 +31,12 @@ const tableRouter = {
       meta: { title: 'Inline Edit' }
     },
     {
+      path: 'book-info-table',
+      component: () => import('@/views/project/book-info'),
+      name: '图书信息2',
+      meta: { title: '图书信息1' }
+    },
+    {
       path: 'complex-table',
       component: () => import('@/views/customize/complex-table'),
       name: '文章',
