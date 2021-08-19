@@ -6,7 +6,7 @@ const tableRouter = {
   redirect: '/system-mange',
   name: 'system-mange',
   meta: {
-    title: '项目管理',
+    title: '系统管理',
     icon: 'system'
   },
   children: [

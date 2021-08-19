@@ -11,16 +11,16 @@ const tableRouter = {
   },
   children: [
     {
-      path: 'book-info-table',
-      component: () => import('@/views/project/book-info'),
-      name: '图书信息2',
-      meta: { title: '图书信息' }
+      path: 'log',
+      component: () => import('@/views/system-monitor/log'),
+      name: 'log',
+      meta: { title: '操作日志' }
     },
     {
-      path: 'complex-table',
-      component: () => import('@/views/customize/complex-table'),
-      name: '文章',
-      meta: { title: '文章' }
+      path: 'error-log',
+      component: () => import('@/views/system-monitor/error-log'),
+      name: 'error-log',
+      meta: { title: '错误日志' }
     }
   ]
 }
