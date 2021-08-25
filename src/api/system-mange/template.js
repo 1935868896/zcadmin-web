@@ -18,15 +18,7 @@ export function fetchDetail(id) {
     params: { id }
   })
 }
-// 暂时
-export function fetchPv(pv) {
-  return request({
-    url: '/vue-element-admin/article/pv',
-    method: 'get',
-    baseURL: 'http://localhost:8080',
-    params: { pv }
-  })
-}
+
 // 创建
 export function create(data) {
   return request({
@@ -36,7 +28,7 @@ export function create(data) {
     data
   })
 }
-
+// 修改
 export function update(data) {
   return request({
     url: '/project/bookInfo',
@@ -45,7 +37,7 @@ export function update(data) {
     data
   })
 }
-
+// 删除
 export function deleteData(id) {
   return request({
     url: '/project/bookInfo',

@@ -11,10 +11,10 @@ const tableRouter = {
   },
   children: [
     {
-      path: 'book-info-table',
-      component: () => import('@/views/project/book-info'),
-      name: '图书信息2',
-      meta: { title: '图书信息' }
+      path: 'quartz-task',
+      component: () => import('@/views/system-mange/quartz-task'),
+      name: 'quartz-task',
+      meta: { title: '任务调度' }
     },
     {
       path: 'complex-table',

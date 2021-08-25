@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 查
 export function fetchList(query) {
   return request({
-    url: '/project/bookInfo/page',
+    url: '/quartz/quartzJob/page',
     method: 'get',
     baseURL: 'http://localhost:8080',
     params: query
@@ -46,11 +46,11 @@ export function update(data) {
   })
 }
 
-export function deleteData(id) {
+export function deleteData(data) {
   return request({
     url: '/project/bookInfo',
-    method: 'delete',
+    method: 'put',
     baseURL: 'http://localhost:8080',
-    params: { id }
+    data
   })
 }

@@ -11,16 +11,23 @@ const tableRouter = {
   },
   children: [
     {
-      path: 'book-info-table',
-      component: () => import('@/views/project/book-info'),
-      name: '图书信息2',
-      meta: { title: '图书信息' }
+      path: 'gen-tableinfo',
+      component: () => import('@/views/system-tool/gen-code/gen-tableinfo'),
+      name: 'gen-tableinfo',
+      meta: { title: '代码生成' }
     },
     {
-      path: 'complex-table',
-      component: () => import('@/views/customize/complex-table'),
-      name: '文章',
-      meta: { title: '文章' }
+      path: 'gen-config/:tableName',
+      component: () => import('@/views/system-tool/gen-code/gen-config'),
+      hidden: true,
+      name: 'gen-config',
+      meta: { title: '代码配置' }
+    },
+    {
+      path: 'error-log',
+      component: () => import('@/views/system-monitor/error-log'),
+      name: 'error-log',
+      meta: { title: '错误日志' }
     }
   ]
 }

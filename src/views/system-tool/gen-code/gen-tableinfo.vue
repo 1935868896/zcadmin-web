@@ -4,83 +4,22 @@
       <!-- 1. 此处是上方的查询条 -->
       <!--  类型1 : input 查询功能 -->
       <el-input
-        v-model="listQuery.bookId"
-        placeholder="主键"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.status"
-        placeholder="状态"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.tags"
-        placeholder="标签"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.score"
-        placeholder="分数"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.scoreCount"
-        placeholder="评分人数"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
         v-model="listQuery.title"
-        placeholder="书名"
+        placeholder="Title"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-
-      <el-input
-        v-model="listQuery.author"
-        placeholder="作者"
-        style="width: 200px"
+      <!-- 类型2 : 时间功能 -->
+      <el-date-picker
+        v-model="dateTime"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.cover"
-        placeholder="封面图"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.countWord"
-        placeholder="字数"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.updateAt"
-        placeholder="更新时间"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
+        type="datetimerange"
+        style="margin-left: 10px"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
       />
 
       <el-button
@@ -126,66 +65,38 @@
       @sort-change="sortChange"
     >
       <!-- 方法1 -->
-
       <!-- label 列名  {{内容}} -->
       <el-table-column
-        label="ID"
+        label="表名"
         prop="id"
         sortable="custom"
         align="center"
-        width="80"
-        :class-name="getSortClass('id')"
+        min-width="150"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.bookId }}</span>
+          <span>{{ row.tableName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="150px">
+      <el-table-column label="引擎" width="110px">
         <template slot-scope="{ row }">
-          <span>{{ row.status }}</span>
+          <span>{{ row.engine }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="标签" min-width="150px">
+      <el-table-column label="字符集" width="180px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.tags }}</span>
+          <span>{{ row.tableCollation }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="分数" min-width="150px">
+      <el-table-column label="描述" width="180px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.score }}</span>
+          <span>{{ row.tableComment }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="评分人数" min-width="150px">
+      <el-table-column label="创建时间" width="180px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.scoreCount }}</span>
+          <span>{{ row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="书名" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.title }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="作者" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="封面图" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.cover }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="字数" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.countWord }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.updateAt }}</span>
-        </template>
-      </el-table-column>
-
       <!-- 操作 -->
       <el-table-column
         label="操作"
@@ -193,18 +104,15 @@
         width="230"
         class-name="small-padding fixed-width"
       >
-        <template slot-scope="{ row, $index }">
+        <template slot-scope="{ row }">
           <!-- 操作1：简单的按钮模式 -->
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
+          <el-button type="primary" size="mini">
+            <router-link :to="'/system-tool/gen-config/' + row.tableName">
+              配置
+            </router-link>
           </el-button>
-          <el-button
-            v-if="row.status != 'deleted'"
-            size="mini"
-            type="danger"
-            @click="handleDelete(row, $index)"
-          >
-            Delete
+          <el-button type="primary" size="mini" @click="handleGen(row)">
+            代码生成
           </el-button>
         </template>
       </el-table-column>
@@ -217,82 +125,6 @@
       :limit.sync="listQuery.size"
       @pagination="getList"
     />
-    <!-- 表单功能 el-dialog  -->
-    <!-- 表单功能 el-dialog  -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form
-        ref="dataForm"
-        :rules="rules"
-        :model="temp"
-        :inline="true"
-        label-position="left"
-        label-width="90px"
-        style="width: 750px; margin-left: 30px"
-      >
-        <el-form-item label="状态">
-          <el-radio-group v-model="temp.status" style="width: 220px">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="标签">
-          <el-input v-model="temp.tags" style="width: 556px;" rows="4" type="textarea" />
-        </el-form-item>
-        <el-form-item label="分数" prop="jobName">
-          <el-input v-model="temp.score" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="评分人数" prop="jobName">
-          <el-input v-model="temp.scoreCount" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="书名" prop="jobName">
-          <el-input v-model="temp.title" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="作者" prop="jobName">
-          <el-input v-model="temp.author" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="封面图" prop="jobName">
-          <el-input v-model="temp.cover" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="字数" prop="jobName">
-          <el-input v-model="temp.countWord" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="更新时间" prop="timestamp">
-          <el-date-picker
-            v-model="temp.updateAt"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> Cancel </el-button>
-        <el-button
-          type="primary"
-          @click="dialogStatus === 'create' ? createData() : updateData()"
-        >
-          Confirm
-        </el-button>
-      </div>
-    </el-dialog>
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table
-        :data="pvData"
-        border
-        fit
-        highlight-current-row
-        style="width: 100%"
-      >
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="dialogPvVisible = false"
-        >Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -304,7 +136,7 @@ import {
   create,
   update,
   deleteData
-} from '@/api/book-info'
+} from '@/api/system-tool/gen'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -444,6 +276,10 @@ export default {
         }, 1.5 * 1000)
       })
     },
+    handleGen(row) {
+      window.location.href =
+        'http://localhost:8080/tool/gen/genCode/' + row.tableName
+    },
     handleFilter() {
       this.listQuery.page = 1
       if (this.dateTime != null) {
@@ -461,10 +297,11 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          this.temp.author = 'vue-element-admin'
           create(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
@@ -491,7 +328,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp)
+          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           update(tempData).then(() => {
             const index = this.list.findIndex((v) => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)

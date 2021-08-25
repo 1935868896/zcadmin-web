@@ -4,83 +4,22 @@
       <!-- 1. 此处是上方的查询条 -->
       <!--  类型1 : input 查询功能 -->
       <el-input
-        v-model="listQuery.bookId"
-        placeholder="主键"
+        v-model="listQuery.jobName"
+        placeholder="任务名称"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-
-      <el-input
-        v-model="listQuery.status"
-        placeholder="状态"
-        style="width: 200px"
+      <!-- 类型2 : 时间功能 -->
+      <el-date-picker
+        v-model="dateTime"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.tags"
-        placeholder="标签"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.score"
-        placeholder="分数"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.scoreCount"
-        placeholder="评分人数"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.title"
-        placeholder="书名"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.author"
-        placeholder="作者"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.cover"
-        placeholder="封面图"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.countWord"
-        placeholder="字数"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-
-      <el-input
-        v-model="listQuery.updateAt"
-        placeholder="更新时间"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
+        type="datetimerange"
+        style="margin-left: 10px"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
       />
 
       <el-button
@@ -126,7 +65,6 @@
       @sort-change="sortChange"
     >
       <!-- 方法1 -->
-
       <!-- label 列名  {{内容}} -->
       <el-table-column
         label="ID"
@@ -137,52 +75,54 @@
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.bookId }}</span>
+          <span>{{ row.jobId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" min-width="150px">
+      <el-table-column label="任务名称" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.status }}</span>
+          <span>{{ row.jobName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="标签" min-width="150px">
+      <el-table-column label="bean名称" min-width="150px">
         <template slot-scope="{ row }">
-          <span>{{ row.tags }}</span>
+          <span>{{ row.beanName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="分数" min-width="150px">
+      <el-table-column label="执行方法" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.score }}</span>
+          <span>{{ row.methodName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="评分人数" min-width="150px">
+      <el-table-column label="参数" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.scoreCount }}</span>
+          <span>{{ row.params }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="书名" min-width="150px">
+      <el-table-column label="cron表达式" width="180px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.title }}</span>
+          <span>{{ row.cronExpression }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="作者" min-width="150px">
+      <el-table-column label="参数" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.author }}</span>
+          <el-switch
+            v-model="row.isPaluse"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0"
+          />
+
         </template>
       </el-table-column>
-      <el-table-column label="封面图" min-width="150px">
+      <el-table-column label="描述" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.cover }}</span>
+          <span>{{ row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="字数" min-width="150px">
+      <el-table-column label="创建日期" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.countWord }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.updateAt }}</span>
+          <span>{{ row.createTime }}</span>
         </template>
       </el-table-column>
 
@@ -196,7 +136,13 @@
         <template slot-scope="{ row, $index }">
           <!-- 操作1：简单的按钮模式 -->
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
+            编辑
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            执行
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            恢复
           </el-button>
           <el-button
             v-if="row.status != 'deleted'"
@@ -204,7 +150,7 @@
             type="danger"
             @click="handleDelete(row, $index)"
           >
-            Delete
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -218,7 +164,6 @@
       @pagination="getList"
     />
     <!-- 表单功能 el-dialog  -->
-    <!-- 表单功能 el-dialog  -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
@@ -229,40 +174,44 @@
         label-width="90px"
         style="width: 750px; margin-left: 30px"
       >
-        <el-form-item label="状态">
-          <el-radio-group v-model="temp.status" style="width: 220px">
+        <el-form-item label="任务名称" prop="jobName">
+          <el-input v-model="temp.jobName" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="任务描述" prop="description">
+          <el-input v-model="temp.description" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="Bean名称" prop="beanName">
+          <el-input v-model="temp.beanName" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="执行方法" prop="methodName">
+          <el-input v-model="temp.methodName" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="Cron表达式" prop="cronExpression">
+          <el-input v-model="temp.cronExpression" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="子任务ID">
+          <el-input v-model="temp.subTask" placeholder="多个用逗号隔开，按顺序执行" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="任务负责人" prop="personInCharge">
+          <el-input v-model="temp.personInCharge" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="告警邮箱" prop="email">
+          <el-input v-model="temp.email" placeholder="多个邮箱用逗号隔开" style="width: 220px;" />
+        </el-form-item>
+        <el-form-item label="失败后暂停">
+          <el-radio-group v-model="temp.pauseAfterFailure" style="width: 220px">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="标签">
-          <el-input v-model="temp.tags" style="width: 556px;" rows="4" type="textarea" />
+        <el-form-item label="任务状态">
+          <el-radio-group v-model="temp.isPause" style="width: 220px">
+            <el-radio :label="false">启用</el-radio>
+            <el-radio :label="true">暂停</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="分数" prop="jobName">
-          <el-input v-model="temp.score" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="评分人数" prop="jobName">
-          <el-input v-model="temp.scoreCount" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="书名" prop="jobName">
-          <el-input v-model="temp.title" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="作者" prop="jobName">
-          <el-input v-model="temp.author" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="封面图" prop="jobName">
-          <el-input v-model="temp.cover" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="字数" prop="jobName">
-          <el-input v-model="temp.countWord" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="更新时间" prop="timestamp">
-          <el-date-picker
-            v-model="temp.updateAt"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
+        <el-form-item label="参数内容">
+          <el-input v-model="temp.params" style="width: 556px;" rows="4" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -275,6 +224,7 @@
         </el-button>
       </div>
     </el-dialog>
+
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
       <el-table
         :data="pvData"
@@ -304,7 +254,7 @@ import {
   create,
   update,
   deleteData
-} from '@/api/book-info'
+} from '@/api/system-mange/quartz-task'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -342,12 +292,6 @@ export default {
         beginTime: undefined,
         afterTime: undefined
       },
-      importanceOptions: [1, 2, 3],
-      sortOptions: [
-        { label: 'ID Ascending', key: '+id' },
-        { label: 'ID Descending', key: '-id' }
-      ],
-      statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -461,10 +405,11 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          this.temp.author = 'vue-element-admin'
           create(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
@@ -491,7 +436,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp)
+          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           update(tempData).then(() => {
             const index = this.list.findIndex((v) => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)

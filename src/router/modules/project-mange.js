@@ -18,9 +18,9 @@ const tableRouter = {
     },
     {
       path: 'complex-table',
-      component: () => import('@/views/customize/complex-table'),
-      name: '文章',
-      meta: { title: '文章' }
+      component: () => import('@/views/project/template'),
+      name: 'template',
+      meta: { title: '模板' }
     }
   ]
 }
