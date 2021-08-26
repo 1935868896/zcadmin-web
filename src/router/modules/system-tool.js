@@ -24,10 +24,10 @@ const tableRouter = {
       meta: { title: '代码配置' }
     },
     {
-      path: 'error-log',
-      component: () => import('@/views/system-monitor/error-log'),
-      name: 'error-log',
-      meta: { title: '错误日志' }
+      path: 'upload-file',
+      component: () => import('@/views/system-tool/upload/upload'),
+      name: 'upload-file',
+      meta: { title: '文件上传' }
     }
   ]
 }

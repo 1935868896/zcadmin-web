@@ -5,7 +5,7 @@ import Layout from '@/layout'
 const tableRouter = {
   path: '/project',
   component: Layout,
-  redirect: '/project/book-info-table',
+  redirect: '/project-mange/book-info-table',
   name: '项目',
   meta: {
     title: '项目',
@@ -14,7 +14,7 @@ const tableRouter = {
   children: [
     {
       path: 'book-info-table',
-      component: () => import('@/views/project/book-info'),
+      component: () => import('@/views/project-mange/book-info'),
       name: '图书信息2',
       meta: { title: '图书信息' }
     },

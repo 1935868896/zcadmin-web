@@ -12,7 +12,7 @@ const tableRouter = {
   children: [
     {
       path: 'book-info-table',
-      component: () => import('@/views/project/book-info'),
+      component: () => import('@/views/project-mange/book-info'),
       name: '图书信息2',
       meta: { title: '图书信息' }
     },

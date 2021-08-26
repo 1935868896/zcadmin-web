@@ -10,7 +10,7 @@
           size="mini"
           style="float: right; padding: 6px 9px"
           type="success"
-          @click="toGen"
+          @click="handleUpdateAndGen"
         >保存&生成</el-button>
         <el-button
           :loading="columnLoading"
@@ -134,13 +134,14 @@
         style="width: 750px; margin-left: 30px"
       >
         <el-form-item label="表名">
-          <el-input v-model="genConfig.tableName" :disabled="true" style="width: 400px" />
+          <el-input
+            v-model="genConfig.tableName"
+            :disabled="true"
+            style="width: 400px"
+          />
         </el-form-item>
         <el-form-item label="作者名称">
           <el-input v-model="genConfig.author" style="width: 400px" />
-        </el-form-item>
-        <el-form-item label="是否覆盖">
-          <el-input v-model="genConfig.cover" style="width: 400px" />
         </el-form-item>
         <el-form-item label="vue模块名称">
           <el-input v-model="genConfig.vueModuleName" style="width: 400px" />
@@ -158,7 +159,7 @@
           <el-input v-model="genConfig.prefix" style="width: 400px" />
         </el-form-item>
         <el-form-item label="接口名称">
-          <el-input v-model="temp.apiAlias" style="width: 400px" />
+          <el-input v-model="genConfig.apiAlias" style="width: 400px" />
         </el-form-item>
       </el-form>
     </el-card>
@@ -170,7 +171,8 @@
 import {
   fetchList,
   updateCodeGenConfig,
-  updateCodeColumnConfig
+  updateCodeColumnConfig,
+  syncConfig
 } from '@/api/system-tool/gen-code/code-config'
 import waves from '@/directive/waves' // waves directive
 
@@ -209,8 +211,8 @@ export default {
       ],
       options2: [
         {
-          value: '==',
-          label: '=='
+          value: '=',
+          label: '='
         },
         {
           value: '!=',
@@ -320,6 +322,12 @@ export default {
     // updateData() 根据参数 修改数据
     // handleDownload() 下载数据    // formatJson()
     //
+
+    sync() {
+      syncConfig(this.$route.params.tableName).then(() => {
+        this.getList()
+      })
+    },
     updateGenConfig() {
       updateCodeGenConfig(this.genConfig).then(() => {
         this.$notify({
@@ -328,8 +336,15 @@ export default {
           type: 'success',
           duration: 2000
         })
-      }
-      )
+      })
+    },
+    handleUpdateAndGen() {
+      updateCodeColumnConfig(this.list).then(() => {
+        this.getList()
+        window.location.href =
+          'http://localhost:8080/tool/gen/genCode/' +
+          this.$route.params.tableName
+      })
     },
 
     getList() {
@@ -341,7 +356,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 2.5 * 1000)
+        }, 1.5 * 1000)
       })
     },
     handleFilter() {

@@ -12,15 +12,21 @@ const tableRouter = {
   children: [
     {
       path: 'book-info-table',
-      component: () => import('@/views/project/book-info'),
+      component: () => import('@/views/project-mange/book-info'),
       name: '图书信息2',
       meta: { title: '图书信息' }
     },
     {
       path: 'complex-table',
-      component: () => import('@/views/project/template'),
+      component: () => import('@/views/project-mange/template'),
       name: 'template',
       meta: { title: '模板' }
+    },
+    {
+      path: 'pms-brand',
+      component: () => import('@/views/project-mange/pms-brand'),
+      name: 'pms-brand',
+      meta: { title: '品牌管理' }
     }
   ]
 }
