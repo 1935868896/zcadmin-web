@@ -10,7 +10,7 @@ import Layout from '@/layout'
 import componentMange from './modules/component-mange'
 import multiLevelMenu from './modules/multi-level-menu'
 import opsMange from './modules/ops-mange'
-import projectMange from './modules/project-mange'
+// import projectMange from './modules/project-mange'
 import systemMange from './modules/system-mange'
 import systemMonitor from './modules/system-monitor'
 import systemTool from './modules/system-tool'
@@ -98,7 +98,7 @@ export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
   systemMange,
   systemMonitor,
-  projectMange,
+  // projectMange,
   opsMange,
   systemTool,
   componentMange,
