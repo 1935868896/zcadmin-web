@@ -44,7 +44,20 @@
           </span>
         </el-form-item>
       </el-tooltip>
+      <el-form-item prop="verifycode">
 
+        <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
+        <el-input v-model="loginForm.verifyCode" style="width: 53%;display: inline-block;" placeholder="请输入验证码" class="identifyinput" />
+
+        <div class="login-code" style="width: 33%;display: inline-block;">
+          <img :src="codeUrl" @click="getCode">
+        </div>
+
+      </el-form-item>
+
+      <!-- ————————————————
+版权声明：本文为CSDN博主「过往深处少年蓝」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 -->
+      <!-- 原文链接：https://blog.csdn.net/qq_39009348/article/details/81411432 -->
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
@@ -76,7 +89,7 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-
+import { getCodeImg } from '@/api/auth'
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -96,9 +109,13 @@ export default {
       }
     }
     return {
+      codeUrl: '',
       loginForm: {
         username: 'admin',
-        password: '123456'
+        password: '123456',
+        verifyType: 'password',
+        uuid: '',
+        verifyCode: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -126,6 +143,7 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    this.getCode()
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -138,6 +156,12 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    getCode() {
+      getCodeImg().then(res => {
+        this.codeUrl = res.data.img
+        this.loginForm.uuid = res.data.uuid
+      })
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
@@ -313,6 +337,17 @@ $light_gray:#eee;
     position: absolute;
     right: 0;
     bottom: 6px;
+  }
+
+   .login-code {
+    width: 33%;
+    display: inline-block;
+    height: 38px;
+
+    img{
+      cursor: pointer;
+      vertical-align:middle
+    }
   }
 
   @media only screen and (max-width: 470px) {

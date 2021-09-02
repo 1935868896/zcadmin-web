@@ -10,17 +10,29 @@ const tableRouter = {
     icon: 'system'
   },
   children: [
+
+    {
+      path: 'sys-user',
+      component: () => import('@/views/system-mange/sys-user'),
+      name: 'sys-user',
+      meta: { title: '系统用户管理' }
+    }, {
+      path: 'sys-role',
+      component: () => import('@/views/system-mange/sys-role'),
+      name: 'sys-role',
+      meta: { title: '角色管理' }
+    },
+    {
+      path: 'sys-menu',
+      component: () => import('@/views/system-mange/sys-menu'),
+      name: 'sys-menu',
+      meta: { title: '系统菜单管理' }
+    },
     {
       path: 'quartz-task',
       component: () => import('@/views/system-mange/quartz-task'),
       name: 'quartz-task',
       meta: { title: '任务调度' }
-    },
-    {
-      path: 'complex-table',
-      component: () => import('@/views/customize/complex-table'),
-      name: '文章',
-      meta: { title: '文章' }
     }
   ]
 }
