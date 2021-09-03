@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, create, update } from '@/api/book-info'
+import { fetchList, fetchPv, create, update } from '@/api/project-mange/book-info'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination

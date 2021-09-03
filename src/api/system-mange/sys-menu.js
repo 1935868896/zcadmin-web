@@ -19,7 +19,7 @@ export function getTree() {
 
 export function getMenuByRoleId(id) {
   return request({
-    url: '/system/rolesMenus/roleId',
+    url: '/system/role/getMenuByRoleId',
     method: 'get',
     baseURL: 'http://localhost:8080',
     params: { id }
@@ -29,7 +29,7 @@ export function getMenuByRoleId(id) {
 
 export function updateBatch(data) {
   return request({
-    url: '/system/rolesMenus/batch',
+    url: '/system/role/batch',
     method: 'put',
     baseURL: 'http://localhost:8080',
     data

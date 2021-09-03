@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 分页查
 export function fetchList(query) {
   return request({
-    url: '/system/role/page',
+    url: '/system/role',
     method: 'get',
     baseURL: 'http://localhost:8080',
     params: query

@@ -20,7 +20,7 @@ const tableRouter = {
       path: 'sys-role',
       component: () => import('@/views/system-mange/sys-role'),
       name: 'sys-role',
-      meta: { title: '角色管理' }
+      meta: { title: '系统角色管理' }
     },
     {
       path: 'sys-menu',
