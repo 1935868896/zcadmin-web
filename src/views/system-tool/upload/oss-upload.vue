@@ -48,11 +48,9 @@ export default {
       return result
     },
     uploadError() {
-      console.log('2')
       this.$message.error('图片上传失败！')
     },
     uploadSuccess() {
-      console.log('3')
       this.$message.success('图片上传成功！')
       this.photos.push(this.addressOss + '' + this.dataOss.key)
     }
