@@ -19,6 +19,16 @@
           <span>{{ row.title }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="图标" min-width="80px" style="text-align: center;">
+        <template slot-scope="{ row }">
+          <svg-icon :icon-class="row.icon ?row.icon : ''" />
+        </template>
+      </el-table-column>
+      <el-table-column label="链接地址" min-width="150px">
+        <template slot-scope="{ row }">
+          <span>{{ row.path }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="组件名称" min-width="150px">
         <template slot-scope="{ row }">
           <span>{{ row.name }}</span>
@@ -34,34 +44,23 @@
           <span>{{ row.menuSort }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="图标" min-width="150px">
+
+      <el-table-column label="外链" min-width="150px">
         <template slot-scope="{ row }">
-          <span>{{ row.icon }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="链接地址" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.path }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否外链" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.iFrame }}</span>
+          <span v-if="row.iFrame">是</span>
+          <span v-else>否</span>
         </template>
       </el-table-column>
       <el-table-column label="缓存" min-width="150px">
         <template slot-scope="{ row }">
-          <span>{{ row.cache }}</span>
+          <span v-if="row.cache">是</span>
+          <span v-else>否</span>
         </template>
       </el-table-column>
-      <el-table-column label="隐藏" min-width="150px">
+      <el-table-column label="展示" min-width="150px">
         <template slot-scope="{ row }">
-          <span>{{ row.hidden }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="权限" min-width="150px">
-        <template slot-scope="{ row }">
-          <span>{{ row.permission }}</span>
+          <span v-if="row.hidden">否</span>
+          <span v-else>是</span>
         </template>
       </el-table-column>
       <!-- 操作 -->
