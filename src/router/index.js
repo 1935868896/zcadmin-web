@@ -8,8 +8,6 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import componentMange from './modules/component-mange'
-import multiLevelMenu from './modules/multi-level-menu'
-import opsMange from './modules/ops-mange'
 import projectMange from './modules/project-mange'
 import systemMange from './modules/system-mange'
 import systemMonitor from './modules/system-monitor'
@@ -99,10 +97,8 @@ export const asyncRoutes = [
   systemMange,
   systemMonitor,
   projectMange,
-  opsMange,
   systemTool,
   componentMange,
-  multiLevelMenu,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
