@@ -9,6 +9,7 @@
       :on-success="uploadSuccess"
       :on-error="uploadError"
       auto-upload="true"
+      drag
     >
       <i class="el-icon-upload" />
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -30,14 +31,15 @@ export default {
 
   methods: {
     beforeUpload(file) {
-      const fileName = 'test' + file.uid + file.name // 文件名，和后台约定
-      const pathPre = 'test'
+      const fileName = file.uid + file.name // 文件名，和后台约定
+      var aData = new Date()
+      const pathPre = aData.getFullYear() + '-' + (aData.getMonth() + 1) + '-' + aData.getDate()
       console.log('1')
       const result = getOssToken(fileName, pathPre).then((reponse) => {
         this.addressOss = reponse.data.host // 上传地址
         console.log(reponse.data.host)
         this.dataOss = {
-          key: fileName,
+          key: pathPre + '/' + fileName,
           ossAccessKeyId: reponse.data.accessId,
           policy: reponse.data.policy,
           signature: reponse.data.signature
