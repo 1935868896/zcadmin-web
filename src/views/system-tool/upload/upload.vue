@@ -147,7 +147,6 @@
       @pagination="getList"
     />
     <!-- 表单功能 el-dialog  -->
-    <!-- 表单功能 el-dialog  -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
@@ -157,7 +156,11 @@
         label-position="left"
         label-width="90px"
         style="width: 750px; margin-left: 30px"
-      />
+      >
+        <el-form-item label="文件名字">
+          <el-input v-model="temp.name" style="width: 220px;" />
+        </el-form-item>
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
         <el-button
@@ -208,6 +211,7 @@
             :on-success="handleSuccess"
             :on-error="handleError"
             :action="fileUploadApi + '?fileName=' + fileForm.name"
+            :headers="myHeaders"
           >
             <div class="eladmin-upload">
               <i class="el-icon-upload" /> 添加文件
@@ -240,6 +244,7 @@ import {
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'ComplexTable',
@@ -265,6 +270,8 @@ export default {
       fileForm: {
         name: ''
       },
+      myHeaders: { 'X-Token': getToken() },
+
       fileUploadApi: 'http://localhost:8080/upload',
       listQuery: {
         page: 1,

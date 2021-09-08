@@ -82,7 +82,7 @@ service.interceptors.response.use(
     }
     if (res.code !== 20000) {
       Message({
-        message: res.message || 'Error',
+        message: res.data || 'Error',
         type: 'error',
         duration: 5 * 1000
       })

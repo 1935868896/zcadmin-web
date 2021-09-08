@@ -108,7 +108,6 @@ const actions = {
       getMenu().then(res => {
         let newRouters = filterAsyncRouter(res.data)
         newRouters = newRouters.concat(asyncRoutes)
-        console.log('123')
         console.log(newRouters)
         if (roles.includes('admin')) {
           accessedRoutes = newRouters || []

@@ -40,11 +40,21 @@
       >
         Export
       </el-button>
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="deleteSelection"
+      >
+        Delete
+      </el-button>
     </div>
 
     <!-- 表格功能  -->
     <el-table
       :key="tableKey"
+      ref="multipleTable"
       v-loading="listLoading"
       :data="list"
       border
@@ -56,6 +66,7 @@
       <!-- 方法1 -->
 
       <!-- label 列名  {{内容}} -->
+      <el-table-column ref="" type="selection" width="55" />
       <el-table-column
         label="ID"
         prop="id"
@@ -73,9 +84,20 @@
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="品牌logo地址" min-width="150px">
+      <el-table-column label="品牌logo地址" width="100px">
         <template slot-scope="{ row }">
-          <span>{{ row.logo }}</span>
+          <el-image
+            :src="row.logo"
+            :preview-src-list="[row.logo]"
+            fit="contain"
+            style="width: 80px; height: 60px"
+            lazy
+            class="el-avatar"
+          >
+            <div slot="error">
+              <i class="el-icon-document" />
+            </div>
+          </el-image>
         </template>
       </el-table-column>
       <el-table-column label="介绍" min-width="150px">
@@ -83,9 +105,16 @@
           <span>{{ row.descript }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="显示状态[0-不显示；1-显示]" min-width="150px">
+      <el-table-column label="状态" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.showStatus }}</span>
+          <el-switch
+            v-model="row.showStatus"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0"
+            @change="handleUpdate(row)"
+          />
         </template>
       </el-table-column>
       <el-table-column label="检索首字母" min-width="150px">
@@ -145,6 +174,7 @@
         <el-form-item label="品牌名">
           <el-input v-model="temp.name" style="width: 220px" />
         </el-form-item>
+
         <el-form-item label="品牌logo地址">
           <el-input v-model="temp.logo" style="width: 220px" />
         </el-form-item>
@@ -292,7 +322,10 @@ export default {
     // updateData() 根据参数 修改数据
     // handleDownload() 下载数据    // formatJson()
     //
-
+    deleteSelection() {
+      const selectData = this.$refs.multipleTable.selection
+      console.log(selectData)
+    },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
@@ -388,7 +421,9 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp)
           update(tempData).then(() => {
-            const index = this.list.findIndex((v) => v.id === this.temp.brandId)
+            const index = this.list.findIndex(
+              (v) => v.id === this.temp.brandId
+            )
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -462,3 +497,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+::v-deep .el-image__error,
+.el-image__placeholder {
+  background: none;
+}
+::v-deep .el-image-viewer__wrapper {
+  top: 55px;
+}
+</style>
