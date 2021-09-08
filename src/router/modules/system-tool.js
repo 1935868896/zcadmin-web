@@ -34,6 +34,12 @@ const tableRouter = {
       component: () => import('@/views/system-tool/upload/oss-upload'),
       name: 'upload-file',
       meta: { title: 'oss文件上传' }
+    },
+    {
+      path: 'email-post',
+      component: () => import('@/views/system-tool/mail-post'),
+      name: 'mail-post',
+      meta: { title: '邮件发送' }
     }
   ]
 }
