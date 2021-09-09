@@ -161,6 +161,32 @@
         <el-form-item label="接口名称">
           <el-input v-model="genConfig.apiAlias" style="width: 400px" />
         </el-form-item>
+        <el-form-item label="是否逻辑删除">
+          <el-radio-group
+            v-model="genConfig.logicDelete"
+            style="width: 400px"
+            @change="handleLogicDelete"
+          >
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="逻辑删除字段">
+          <el-select
+            v-model="genConfig.logicField"
+            placeholder="请选择"
+            :disabled="!genConfig.logicDelete"
+            style="width: 400px"
+          >
+            <el-option
+              v-for="item in list"
+              :key="item.columnName"
+              :label="item.columnName"
+              :value="item.columnName"
+            />
+          </el-select>
+
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -323,6 +349,11 @@ export default {
     // handleDownload() 下载数据    // formatJson()
     //
 
+    handleLogicDelete(param) {
+      if (!param) {
+        this.genConfig.logicField = ''
+      }
+    },
     sync() {
       syncConfig(this.$route.params.tableName).then(() => {
         this.getList()
