@@ -82,15 +82,16 @@ service.interceptors.response.use(
     }
     // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
     if (res.code === 50016) {
-      MessageBox.confirm('jwt进入了黑名单,请重新登录', 'Confirm logout', {
-        confirmButtonText: 'Re-Login',
-        cancelButtonText: 'Cancel',
+      MessageBox.confirm('jwt进入了黑名单,请联系管理员并重新登录', '黑名单', {
+        confirmButtonText: '重登',
+        cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         store.dispatch('user/resetToken').then(() => {
           location.reload()
         })
       })
+      return Promise.reject(new Error(res.msg || 'Error'))
     }
     if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
       // to re-login
@@ -106,12 +107,12 @@ service.interceptors.response.use(
     }
     if (res.code !== 20000) {
       Message({
-        message: res.data || 'Error',
+        message: res.msg || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
 
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
     }

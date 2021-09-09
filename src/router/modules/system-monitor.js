@@ -29,10 +29,8 @@ const tableRouter = {
       meta: { title: '错误日志' }
     },
     {
-      path: 'swagger',
-      component: () => import('@/views/system-monitor/swagger'),
-      name: 'swagger',
-      meta: { title: '系统接口' }
+      path: 'http://localhost:8080/doc.html#/home',
+      meta: { title: 'swagger接口' }
     }
   ]
 }
