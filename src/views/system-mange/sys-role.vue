@@ -12,6 +12,7 @@
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
+              @click="handleCreate"
             >操作按钮</el-button>
           </div>
           <el-table

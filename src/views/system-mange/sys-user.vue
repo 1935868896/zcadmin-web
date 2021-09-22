@@ -433,8 +433,13 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          const tempData = Object.assign({}, this.temp)
+          tempData.timestamp = +new Date(tempData.timestamp)
           this.temp.author = 'vue-element-admin'
-          create(this.temp).then(() => {
+          const transferData = {}
+          transferData.user = tempData
+          transferData.roles = this.roleDatas
+          create(transferData).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
