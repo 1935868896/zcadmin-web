@@ -9,6 +9,15 @@ export function fetchList(query) {
   })
 }
 
+export function updateMethodConfig(data) {
+  return request({
+    url: '/generator/codeMethodConfig/batch',
+    method: 'put',
+    baseURL: 'http://localhost:8080',
+    data
+  })
+}
+
 // 修改
 export function updateAndGen(tableName, data) {
   return request({
