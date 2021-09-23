@@ -333,7 +333,7 @@ export default {
     getMenuTree() {
       this.listLoading = true
       getTree().then((response) => {
-        this.tableData = response.data
+        this.tableData = response.data[0].children
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)

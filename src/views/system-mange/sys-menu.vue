@@ -1,6 +1,18 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" />
+    <div class="filter-container">
+
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate"
+      >
+        Add
+      </el-button>
+
+    </div>
 
     <!-- 表格功能  -->
     <el-table
@@ -92,64 +104,85 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
-        :rules="rules"
         :model="temp"
         :inline="true"
         label-position="left"
-        label-width="90px"
-        style="width: 750px; margin-left: 30px"
+        label-width="80px"
+        style="width: 580px; margin-left: 15px"
       >
-        <el-form-item label="上级菜单ID">
-          <el-input v-model="temp.pid" style="width: 220px;" />
+        <el-form-item label="菜单类型" prop="temp.type">
+          <el-radio-group v-model="temp.type" size="mini" style="width: 178px">
+            <el-radio-button label="0">目录</el-radio-button>
+            <el-radio-button label="1">菜单</el-radio-button>
+            <el-radio-button label="2">按钮</el-radio-button>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="子菜单数目">
-          <el-input v-model="temp.subCount" style="width: 220px;" />
+        <el-form-item v-show="temp.type !== '2'" label="菜单图标" prop="temp.icon">
+          <el-popover
+            placement="bottom-start"
+            width="450"
+            trigger="click"
+            @show="$refs['iconSelect'].reset()"
+          >
+            <IconSelect ref="iconSelect" @selected="selected" />
+            <el-input slot="reference" v-model="temp.icon" style="width: 450px;" placeholder="点击选择图标" readonly>
+              <svg-icon v-if="temp.icon" slot="prefix" :icon-class="temp.icon" class="el-input__icon" style="height: 32px;width: 16px;" />
+              <i v-else slot="prefix" class="el-icon-search el-input__icon" />
+            </el-input>
+          </el-popover>
         </el-form-item>
-        <el-form-item label="菜单类型">
-          <el-input v-model="temp.type" style="width: 220px;" />
+
+        <el-form-item label="上级类目" prop="pid">
+          <treeselect
+            v-model="temp.pid"
+            :options="selectTreeData"
+            :normalizer="normalizer"
+            style="width: 450px;"
+            placeholder="选择上级类目"
+          />
         </el-form-item>
-        <el-form-item label="菜单标题">
-          <el-input v-model="temp.title" style="width: 220px;" />
+        <el-form-item v-show="temp.type !== '2'" label="是否外链">
+          <el-radio-group v-model="temp.iframe" size="mini">
+            <el-radio-button label="true">是</el-radio-button>
+            <el-radio-button label="false">否</el-radio-button>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="组件名称">
-          <el-input v-model="temp.name" style="width: 220px;" />
+        <el-form-item v-show="temp.type === '1'" label="缓存">
+          <el-radio-group v-model="temp.cache" size="mini">
+            <el-radio-button label="true">是</el-radio-button>
+            <el-radio-button label="false">否</el-radio-button>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="组件">
-          <el-input v-model="temp.component" style="width: 220px;" />
+        <el-form-item v-show="temp.type !== '2'" label="是否隐藏">
+          <el-radio-group v-model="temp.hidden" size="mini">
+            <el-radio-button label="true">是</el-radio-button>
+            <el-radio-button label="false">否</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-show="temp.type !== '2'" label="菜单标题">
+          <el-input v-model="temp.title" style="width: 180px;" />
+        </el-form-item>
+        <el-form-item v-show="temp.type === '2'" label="按钮标题">
+          <el-input v-model="temp.title" style="width: 180px;" />
+        </el-form-item>
+        <el-form-item v-show="temp.iframe !== 'true' && temp.type === '1'" label="组件名称">
+          <el-input v-model="temp.name" style="width: 180px;" />
+        </el-form-item>
+        <el-form-item v-show="temp.iframe !== 'true' && temp.type === '1'" label="组件">
+          <el-input v-model="temp.component" style="width: 180px;" />
+        </el-form-item>
+
+        <el-form-item v-show="temp.type === '1'" label="链接地址">
+          <el-input v-model="temp.path" style="width: 180px;" />
+        </el-form-item>
+
+        <el-form-item v-show="temp.type !== '0'" label="权限">
+          <el-input v-model="temp.permission" style="width: 180px;" />
         </el-form-item>
         <el-form-item label="排序">
-          <el-input v-model="temp.menuSort" style="width: 220px;" />
+          <el-input v-model="temp.menuSort" style="width: 180px;" />
         </el-form-item>
-        <el-form-item label="图标">
-          <el-input v-model="temp.icon" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="链接地址">
-          <el-input v-model="temp.path" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="是否外链">
-          <el-input v-model="temp.iFrame" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="缓存">
-          <el-input v-model="temp.cache" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="隐藏">
-          <el-input v-model="temp.hidden" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="权限">
-          <el-input v-model="temp.permission" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="创建者">
-          <el-input v-model="temp.createBy" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="更新者">
-          <el-input v-model="temp.updateBy" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="创建日期">
-          <el-input v-model="temp.createTime" style="width: 220px;" />
-        </el-form-item>
-        <el-form-item label="更新时间">
-          <el-input v-model="temp.updateTime" style="width: 220px;" />
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
@@ -193,9 +226,12 @@ import {
 } from '@/api/system-mange/sys-menu'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import IconSelect from '@/components/IconSelect'
 export default {
   name: 'ComplexTable',
+  components: { Treeselect, IconSelect },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -210,6 +246,7 @@ export default {
   data() {
     return {
       tableData: null,
+      selectTreeData: null,
       dateTime: [],
       tableKey: 0,
       list: null,
@@ -232,6 +269,14 @@ export default {
         { label: 'ID Ascending', key: '+id' },
         { label: 'ID Descending', key: '-id' }
       ],
+
+      normalizer(tableData) {
+        return {
+          id: tableData.menuId,
+          label: tableData.title,
+          children: tableData.children
+        }
+      },
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
@@ -240,8 +285,9 @@ export default {
         remark: '',
         timestamp: new Date(),
         title: '',
-        type: '',
-        status: 'published'
+        type: '1',
+        status: 'published',
+        icon: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -274,6 +320,10 @@ export default {
     this.getMenuTree()
   },
   methods: {
+
+    selected(name) {
+      this.temp.icon = name
+    },
     // 方法: 增删改查:
     // getList() 查: 不带任何参数,根据分页查询数据
     // handleFilter() 查: 带参查询
@@ -314,19 +364,22 @@ export default {
         timestamp: new Date(),
         title: '',
         status: 'published',
-        type: ''
+        type: '0',
+        icon: ''
       }
     },
 
     getMenuTree() {
       this.listLoading = true
       getTree().then((response) => {
-        this.tableData = response.data
+        this.tableData = response.data[0].children
+        this.selectTreeData = response.data
         console.log(this.tableData)
+
         // Just to simulate the time of the request
-          .setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
       })
     },
 
@@ -364,7 +417,6 @@ export default {
         if (valid) {
           this.temp.author = 'vue-element-admin'
           create(this.temp).then(() => {
-            this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
