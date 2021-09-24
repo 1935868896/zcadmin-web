@@ -431,6 +431,7 @@ export default {
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
+      this.temp.type = this.temp.type.toString()
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -443,12 +444,10 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp)
           update(tempData).then(() => {
-            const index = this.list.findIndex((v) => v.id === this.temp.menuId)
-            this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Update Successfully',
+              message: 'update Successfully',
               type: 'success',
               duration: 2000
             })

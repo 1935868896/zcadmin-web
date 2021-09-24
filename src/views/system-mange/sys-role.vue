@@ -327,7 +327,14 @@ export default {
       } else {
         this.updateParam.roleId = this.checkRoleId
         this.updateParam.menuIds = this.$refs.tree.getCheckedKeys()
-        updateBatch(this.updateParam).then(() => {})
+        updateBatch(this.updateParam).then(() => {
+          this.$notify({
+            title: 'Success',
+            message: 'update Successfully',
+            type: 'success',
+            duration: 2000
+          })
+        })
       }
     },
     getMenuTree() {
