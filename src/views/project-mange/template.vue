@@ -4,7 +4,7 @@
       <!-- 1. 此处是上方的查询条 -->
       <!--  类型1 : input 查询功能 -->
       <el-input
-        v-model="listQuery.title"
+        v-model="paramQuery.title"
         placeholder="Title"
         style="width: 200px"
         class="filter-item"
@@ -55,7 +55,6 @@
 
     <!-- 表格功能  -->
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
       :data="list"
       border
@@ -68,22 +67,21 @@
       <!-- label 列名  {{内容}} -->
       <el-table-column
         label="ID"
-        prop="id"
+        prop="bookId"
         sortable="custom"
         align="center"
         width="80"
-        :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
           <span>{{ row.bookId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Title" min-width="150px">
+      <el-table-column label="Title" min-width="150px" sortable="custom" prop="title">
         <template slot-scope="{ row }">
           <span>{{ row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110px" align="center">
+      <el-table-column label="Author" width="110px" align="center" sortable="custom">
         <template slot-scope="{ row }">
           <span>{{ row.author }}</span>
         </template>
@@ -137,8 +135,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.current"
-      :limit.sync="listQuery.size"
+      :page.sync="pageQuery.current"
+      :limit.sync="pageQuery.size"
       @pagination="getList"
     />
     <!-- 表单功能 el-dialog  -->
@@ -204,25 +202,6 @@
         </el-button>
       </div>
     </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table
-        :data="pvData"
-        border
-        fit
-        highlight-current-row
-        style="width: 100%"
-      >
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="dialogPvVisible = false"
-        >Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -230,7 +209,6 @@
 // 导入模块
 import {
   fetchList,
-  fetchPv,
   create,
   update,
   deleteData
@@ -240,7 +218,6 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'ComplexTable',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -255,47 +232,31 @@ export default {
   },
   data() {
     return {
-      dateTime: [],
-      tableKey: 0,
-      list: null,
-      total: 0,
+      downloadLoading: false,
       listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 10,
-        size: 10,
-        current: 1,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id',
-        beginTime: undefined,
-        afterTime: undefined
-      },
-      importanceOptions: [1, 2, 3],
-      sortOptions: [
-        { label: 'ID Ascending', key: '+id' },
-        { label: 'ID Descending', key: '-id' }
-      ],
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
-      },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
         create: 'Create'
       },
-      dialogPvVisible: false,
-      pvData: [],
+      total: 0,
+      pageQuery: {
+        current: 1,
+        size: 10,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        beginTime: undefined,
+        afterTime: undefined,
+        orders: []
+      },
+      dateTime: [],
+      list: null,
+      paramQuery: {},
+      temp: {
+      },
+      statusOptions: ['published', 'draft', 'deleted'],
       rules: {
         type: [
           { required: true, message: 'type is required', trigger: 'change' }
@@ -311,8 +272,8 @@ export default {
         title: [
           { required: true, message: 'title is required', trigger: 'blur' }
         ]
-      },
-      downloadLoading: false
+      }
+
     }
   },
   created() {
@@ -329,25 +290,22 @@ export default {
     // handleDownload() 下载数据    // formatJson()
     //
 
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      })
-      row.status = status
-    },
-
     sortChange(data) {
       const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
+      const propToLine = prop.replace(/([A-Z])/g, '_$1').toLowerCase()
+      this.sortByID(order, propToLine)
     },
-    sortByID(order) {
+    sortByID(order, prop) {
+      this.pageQuery.orders = []
       if (order === 'ascending') {
-        this.listQuery.sort = '+id'
+        this.pageQuery.orders.push({
+          asc: true,
+          column: prop })
       } else {
-        this.listQuery.sort = '-id'
+        this.pageQuery.orders.push({
+          asc: false,
+          column: prop
+        })
       }
       this.handleFilter()
     },
@@ -365,7 +323,7 @@ export default {
 
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then((response) => {
+      fetchList(this.paramQuery, this.pageQuery).then((response) => {
         this.list = response.data.records
         this.total = response.data.total
         // Just to simulate the time of the request
@@ -375,10 +333,11 @@ export default {
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.pageQuery.page = 1
+
       if (this.dateTime != null) {
-        this.listQuery.beginTime = this.dateTime[0]
-        this.listQuery.afterTime = this.dateTime[1]
+        this.pageQuery.beginTime = this.dateTime[0]
+        this.pageQuery.afterTime = this.dateTime[1]
       }
       this.getList()
     },
@@ -460,12 +419,6 @@ export default {
         })
     },
 
-    handleFetchPv(pv) {
-      fetchPv(pv).then((response) => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then((excel) => {
@@ -496,11 +449,8 @@ export default {
           }
         })
       )
-    },
-    getSortClass: function(key) {
-      const sort = this.listQuery.sort
-      return sort === `+${key}` ? 'ascending' : 'descending'
     }
+
   }
 }
 </script>

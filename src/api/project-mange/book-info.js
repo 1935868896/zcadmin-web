@@ -1,12 +1,12 @@
 import request from '@/utils/request'
 // 查
-export function fetchList(query) {
+export function fetchList(query, data) {
   return request({
     url: '/project/bookInfo/page',
-    method: 'get',
+    method: 'post',
     baseURL: 'http://localhost:8080',
-    params: query
-
+    params: query,
+    data
   })
 }
 // 根据主键查询

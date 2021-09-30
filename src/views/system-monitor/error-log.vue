@@ -227,7 +227,6 @@ export default {
     readDetail(id) {
       this.dialog = true
       getErrDetail(id).then(res => {
-        console.log('jieguo')
         this.errorInfo = res.data.exception
       })
     },

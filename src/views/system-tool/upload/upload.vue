@@ -82,7 +82,6 @@
         <template slot-scope="{ row }">
           <el-image
             :src="'http://localhost:8080/third/download/' + row.storageId"
-            :preview-src-list="['http://localhost:8080/third/download/' + row.storageId]"
             fit="contain"
             lazy
             class="el-avatar"
