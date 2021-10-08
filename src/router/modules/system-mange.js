@@ -29,6 +29,12 @@ const tableRouter = {
       meta: { title: '系统菜单管理' }
     },
     {
+      path: 'sys-dict',
+      component: () => import('@/views/system-mange/sys-dict'),
+      name: 'sys-dict',
+      meta: { title: '系统字典管理' }
+    },
+    {
       path: 'quartz-task',
       component: () => import('@/views/system-mange/quartz-task'),
       name: 'quartz-task',
