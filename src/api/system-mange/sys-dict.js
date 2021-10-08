@@ -8,6 +8,13 @@ export function fetchList(query, data) {
     data
   })
 }
+
+export function getDictAll() {
+  return request({
+    url: '/system/sysDict',
+    method: 'get'
+  })
+}
 // 根据主键查询
 export function fetchDetail(id) {
   return request({

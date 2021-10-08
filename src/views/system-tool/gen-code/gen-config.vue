@@ -110,6 +110,18 @@
               </el-select>
             </template>
           </el-table-column>
+          <el-table-column label="字典关联" min-width="150px">
+            <template slot-scope="{ row }">
+              <el-select v-model="row.dictName" placeholder="请选择">
+                <el-option
+                  v-for="item in options3"
+                  :key="item.dictId"
+                  :label="item.name"
+                  :value="item.name"
+                />
+              </el-select>
+            </template>
+          </el-table-column>
         </el-table>
       </el-card>
     </el-row>
@@ -256,6 +268,10 @@ import {
   syncConfig,
   updateMethodConfig
 } from '@/api/system-tool/gen-code/code-config'
+import {
+  getDictAll
+
+} from '@/api/system-mange/sys-dict'
 import waves from '@/directive/waves' // waves directive
 
 export default {
@@ -289,6 +305,10 @@ export default {
         {
           value: 'radio',
           label: '单选框'
+        },
+        {
+          value: 'select',
+          label: '选择器'
         }
       ],
       options2: [
@@ -329,7 +349,7 @@ export default {
           label: 'between'
         }
       ],
-
+      options3: null,
       dateTime: [],
       tableKey: 0,
       list: null,
@@ -394,6 +414,11 @@ export default {
   },
   created() {
     this.getList()
+    var _this = this
+    getDictAll().then(res => {
+      _this.options3 = res.data
+      console.log(this.options3)
+    })
   },
   methods: {
     // 方法: 增删改查:
