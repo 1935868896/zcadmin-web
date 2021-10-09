@@ -467,6 +467,7 @@ export default {
         this.list = response.data.columnConfigList
         this.genConfig = response.data.codeGenConfig
         this.methodConfig = response.data.codeMethodConfigs
+        this.listLoading = false
       })
     },
     handleFilter() {

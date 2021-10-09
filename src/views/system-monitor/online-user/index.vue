@@ -233,6 +233,7 @@ export default {
       fetchList(this.listQuery).then((response) => {
         this.list = response.data.content
         this.total = response.data.totalElements
+        this.listLoading = false
       })
     },
 

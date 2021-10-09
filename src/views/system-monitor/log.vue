@@ -186,6 +186,7 @@ export default {
       fetchList(this.paramQuery, this.pageQuery).then((response) => {
         this.list = response.data.records
         this.total = response.data.total
+        this.listLoading = false
       })
     },
     handleFilter() {

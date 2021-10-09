@@ -393,6 +393,7 @@ export default {
       this.listLoading = true
       fetchList().then((response) => {
         this.list = response.data
+        this.listLoading = false
       })
     },
     handleFilter() {
