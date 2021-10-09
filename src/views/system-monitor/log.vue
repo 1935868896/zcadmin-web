@@ -2,14 +2,14 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
+        v-model="paramQuery.title"
         placeholder="Title"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.author"
+        v-model="paramQuery.author"
         placeholder="Author"
         style="width: 200px; margin-left: 10px"
         class="filter-item"
@@ -50,11 +50,9 @@
     >
       <el-table-column
         label="用户名"
-        prop="id"
-        sortable="custom"
+        prop="username"
         align="center"
         width="150"
-        :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
           <span>{{ row.username }}</span>
@@ -85,7 +83,7 @@
           <span>{{ row.time }}ms</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建日期" width="150px" align="center">
+      <el-table-column label="创建日期" width="150px" align="center" sortable="custom" prop="createTime">
         <template slot-scope="{ row }">
           <span>{{ row.createTime }}</span>
         </template>
@@ -95,8 +93,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.current"
-      :limit.sync="listQuery.size"
+      :page.sync="pageQuery.current"
+      :limit.sync="pageQuery.size"
       @pagination="getList"
     />
 
@@ -109,55 +107,30 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
-]
-
-// arr to obj, such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name
-  return acc
-}, {})
-
 export default {
   name: 'ComplexTable',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    },
-    typeFilter(type) {
-      return calendarTypeKeyValue[type]
-    }
-  },
+
   data() {
     return {
       tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
-      listQuery: {
-        logType: 'INFO',
-        page: 1,
-        limit: 20,
-        size: 20,
+      pageQuery: {
         current: 1,
+        size: 10,
         importance: undefined,
         title: undefined,
         type: undefined,
-        sort: '+id'
+        beginTime: undefined,
+        afterTime: undefined,
+        orders: []
       },
+      paramQuery: { logType: 'INFO' },
+
       importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
       sortOptions: [
         { label: 'ID Ascending', key: '+id' },
         { label: 'ID Descending', key: '-id' }
@@ -201,43 +174,41 @@ export default {
     }
   },
   created() {
+    this.pageQuery.orders.push({
+      asc: false,
+      column: 'create_time'
+    })
     this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then((response) => {
+      fetchList(this.paramQuery, this.pageQuery).then((response) => {
         this.list = response.data.records
         this.total = response.data.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.pageQuery.page = 1
       this.getList()
     },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      })
-      row.status = status
-    },
+
     sortChange(data) {
       const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
+      const propToLine = prop.replace(/([A-Z])/g, '_$1').toLowerCase()
+      this.sortByParam(order, propToLine)
     },
-    sortByID(order) {
+    sortByParam(order, prop) {
+      this.pageQuery.orders = []
       if (order === 'ascending') {
-        this.listQuery.sort = '+id'
+        this.pageQuery.orders.push({
+          asc: true,
+          column: prop })
       } else {
-        this.listQuery.sort = '-id'
+        this.pageQuery.orders.push({
+          asc: false,
+          column: prop
+        })
       }
       this.handleFilter()
     },
@@ -310,10 +281,6 @@ export default {
           }
         })
       )
-    },
-    getSortClass: function(key) {
-      const sort = this.listQuery.sort
-      return sort === `+${key}` ? 'ascending' : 'descending'
     }
   }
 }

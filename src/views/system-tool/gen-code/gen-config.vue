@@ -467,10 +467,6 @@ export default {
         this.list = response.data.columnConfigList
         this.genConfig = response.data.codeGenConfig
         this.methodConfig = response.data.codeMethodConfigs
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
       })
     },
     handleFilter() {

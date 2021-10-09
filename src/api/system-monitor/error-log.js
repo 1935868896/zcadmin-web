@@ -1,17 +1,16 @@
 import request from '@/utils/request'
 // 查
-export function fetchList(query) {
+export function fetchList(query, data) {
   return request({
     url: '/api/logs',
-    method: 'get',
-    baseURL: 'http://localhost:8080',
-    params: query
+    method: 'post',
+    params: query,
+    data
   })
 }
 export function getErrDetail(id) {
   return request({
     url: 'api/logs/error/' + id,
-    baseURL: 'http://localhost:8080',
     method: 'get'
   })
 }

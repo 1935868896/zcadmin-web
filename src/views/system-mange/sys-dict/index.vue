@@ -75,14 +75,14 @@
             :limit.sync="pageQuery.size"
             :page-sizes="pageQuery.pageSize"
             layout="total, prev, pager, next"
-            small="true"
+            :small="true"
             @pagination="getList"
           />
         </el-card>
         <div class="grid-content bg-purple" />
       </el-col>
       <el-col :span="14">
-        <DictDetail ref="dictDetail" @childEvent="parentMethod" />
+        <DictDetail ref="dictDetail" />
         <div
           class="grid-content bg-purple"
         /></el-col>
@@ -200,10 +200,6 @@ export default {
       fetchList(this.paramQuery, this.pageQuery).then((response) => {
         this.dataList = response.data.records
         this.total = response.data.total
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
       })
     },
     handleFilter() {
