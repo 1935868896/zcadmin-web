@@ -27,7 +27,7 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-  # Deploy01
+  # Deploy02
     - name: Deploy
       uses: easingthemes/ssh-deploy@v2.2.11
       env:
