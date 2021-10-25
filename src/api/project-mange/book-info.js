@@ -4,7 +4,6 @@ export function fetchList(query, data) {
   return request({
     url: '/project/bookInfo/page',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     params: query,
     data
   })
@@ -14,7 +13,6 @@ export function fetchDetail(id) {
   return request({
     url: '/project/bookInfo/id',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
@@ -23,7 +21,6 @@ export function fetchPv(pv) {
   return request({
     url: '/vue-element-admin/article/pv',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { pv }
   })
 }
@@ -32,7 +29,6 @@ export function create(data) {
   return request({
     url: '/project/bookInfo',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -41,7 +37,6 @@ export function update(data) {
   return request({
     url: '/project/bookInfo',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -50,7 +45,6 @@ export function deleteData(id) {
   return request({
     url: '/project/bookInfo',
     method: 'delete',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }

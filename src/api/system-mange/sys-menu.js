@@ -4,7 +4,6 @@ export function fetchList(query) {
   return request({
     url: '/system/menu/page',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: query
   })
 }
@@ -12,8 +11,7 @@ export function fetchList(query) {
 export function getTree() {
   return request({
     url: '/system/menu/tree',
-    method: 'get',
-    baseURL: 'http://localhost:8080'
+    method: 'get'
   })
 }
 
@@ -21,7 +19,6 @@ export function getMenuByRoleId(id) {
   return request({
     url: '/system/role/getMenuByRoleId',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
 
   })
@@ -31,7 +28,6 @@ export function updateBatch(data) {
   return request({
     url: '/system/role/batch',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -41,7 +37,6 @@ export function fetchDetail(id) {
   return request({
     url: '/system/menu/id',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
@@ -51,7 +46,6 @@ export function create(data) {
   return request({
     url: '/system/menu',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -60,7 +54,6 @@ export function update(data) {
   return request({
     url: '/system/menu',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -69,7 +62,6 @@ export function deleteData(id) {
   return request({
     url: '/system/menu',
     method: 'delete',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }

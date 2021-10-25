@@ -4,7 +4,6 @@ export function fetchList(query) {
   return request({
     url: '/tool/gen/list',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: query
 
   })
@@ -13,9 +12,7 @@ export function fetchList(query) {
 export function genCode(tableName) {
   return request({
     url: '/tool/gen/genCode/' + tableName,
-    method: 'get',
-    baseURL: 'http://localhost:8080'
-
+    method: 'get'
   })
 }
 
@@ -24,7 +21,6 @@ export function fetchDetail(id) {
   return request({
     url: '/project/bookInfo/id',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
@@ -33,7 +29,6 @@ export function fetchPv(pv) {
   return request({
     url: '/vue-element-admin/article/pv',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { pv }
   })
 }
@@ -42,7 +37,6 @@ export function create(data) {
   return request({
     url: '/project/bookInfo',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -51,7 +45,6 @@ export function update(data) {
   return request({
     url: '/project/bookInfo',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -60,7 +53,6 @@ export function deleteData(data) {
   return request({
     url: '/project/bookInfo',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }

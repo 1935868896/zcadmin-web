@@ -4,7 +4,6 @@ export function fetchList(query) {
   return request({
     url: '/project/bookInfo/page',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: query
 
   })
@@ -14,7 +13,6 @@ export function fetchDetail(id) {
   return request({
     url: '/project/bookInfo/id',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
@@ -24,7 +22,6 @@ export function create(data) {
   return request({
     url: '/project/bookInfo',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -33,7 +30,6 @@ export function update(data) {
   return request({
     url: '/project/bookInfo',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -42,7 +38,6 @@ export function deleteData(id) {
   return request({
     url: '/project/bookInfo',
     method: 'delete',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }

@@ -3,8 +3,7 @@ import request from '@/utils/request'
 export function fetchList(query) {
   return request({
     url: '/project/bookInfo/page',
-    method: 'get',
-    baseURL: 'http://localhost:8080'
+    method: 'get'
     // params: query
 
   })

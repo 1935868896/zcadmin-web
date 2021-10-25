@@ -4,7 +4,6 @@ export function fetchList(query) {
   return request({
     url: '/project/brand/page',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: query
   })
 }
@@ -13,7 +12,6 @@ export function fetchDetail(id) {
   return request({
     url: '/project/brand/id',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
@@ -23,7 +21,6 @@ export function create(data) {
   return request({
     url: '/project/brand',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -32,7 +29,6 @@ export function update(data) {
   return request({
     url: '/project/brand',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -41,7 +37,6 @@ export function deleteData(id) {
   return request({
     url: '/project/brand',
     method: 'delete',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }

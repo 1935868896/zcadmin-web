@@ -4,15 +4,13 @@ export function fetchList(query) {
   return request({
     url: '/system/role',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: query
   })
 }
 export function getAllRoles() {
   return request({
     url: '/system/role',
-    method: 'get',
-    baseURL: 'http://localhost:8080'
+    method: 'get'
 
   })
 }
@@ -22,7 +20,6 @@ export function fetchDetail(id) {
   return request({
     url: '/system/role/id',
     method: 'get',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
@@ -32,7 +29,6 @@ export function create(data) {
   return request({
     url: '/system/role',
     method: 'post',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -41,7 +37,6 @@ export function update(data) {
   return request({
     url: '/system/role',
     method: 'put',
-    baseURL: 'http://localhost:8080',
     data
   })
 }
@@ -50,7 +45,6 @@ export function deleteData(id) {
   return request({
     url: '/system/role',
     method: 'delete',
-    baseURL: 'http://localhost:8080',
     params: { id }
   })
 }
